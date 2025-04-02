@@ -30,36 +30,36 @@ public class Init {
             Role userRole = new Role();
             userRole.setName("USER");
             roleService.saveRole(userRole);
-            System.out.println("Роль User создана");
+            System.out.println("Role User created");
         } else {
-            System.out.println("РОЛЬ USER НЕ СОЗДАНА!");
+            System.out.println("Role USER Not created!");
         }
 
         if (roleService.findRoleByName("ADMIN") == null) {
             Role adminRole = new Role();
             adminRole.setName("ADMIN");
             roleService.saveRole(adminRole);
-            System.out.println("Роль ADMIN создана");
+            System.out.println("Role ADMIN created");
         }
         else {
-            System.out.println("РОЛЬ ADMIN НЕ СОЗДАНА!");
+            System.out.println("ROLE ADMIN NOT CREATED!");
         }
 
         if (userService.getUserByEmail("user@example.com") == null) {
             User user = new User();
-            user.setName("Иван");
+            user.setName("Ivan");
             user.setAge(45);
             user.setEmail("user@example.com");
             user.setPassword("user");
             user.setRoles(new HashSet<>(Collections.singleton(roleService.findRoleByName("USER"))));
 
-            userService.saveUser(user, Collections.singletonList(1L));
+            userService.saveUser(user);
             System.out.println(user.getPassword());
         }
 
         if (userService.getUserByEmail("admin@example.com") == null) {
             User admin = new User();
-            admin.setName("Сергей");
+            admin.setName("Sergey");
             admin.setAge(35);
             admin.setEmail("admin@example.com");
             admin.setPassword(("admin"));
@@ -70,11 +70,7 @@ public class Init {
 
             admin.setRoles(roles);
 
-            List<Long> rolesIds = new ArrayList<>();
-            rolesIds.add(1L);
-            rolesIds.add(2L);
-
-            userService.saveUser(admin, rolesIds);
+            userService.saveUser(admin);
             System.out.println(admin.getPassword());
         }
     }

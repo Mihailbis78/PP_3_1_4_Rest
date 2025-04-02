@@ -90,12 +90,34 @@
 
 
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/user_page', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    delete data.password;
+                    getUserElements(data);
+                })
+                .catch(error => console.error('Error filling page'));
+        })
+    </script>
 </head>
 <body>
 <div class="title">
     <div class="text-block">
-        <span th:text="${user.email}">test</span> &nbsp;with roles:&nbsp; <span
-            th:text="${user.roles}">test</span>
+        <span id="titleEmailCurrent">test</span> &nbsp;with roles:&nbsp;
+        <span id="titleRolesCurrent">test</span>
     </div>
     <a href="/logout" class="text-block-button">Logout</a>
 </div>
@@ -103,7 +125,7 @@
     <div class="sidebar col-3">
         <div class="sidebar-links">
             <ul class="nav nav-pills nav-fill flex-column" id="roleTabs" role="tablist">
-                <li class="nav-item" role="presentation" th:if="${isUserRole}">
+                <li class="nav-item" role="presentation">
                     <button class="nav-link custom-nav-button active" id="user-tab" data-bs-toggle="tab"
                             data-bs-target="#user-content" type="button"
                             role="tab" aria-controls="user-content" aria-selected="true">USER
@@ -115,11 +137,11 @@
     <div class="container-fluid">
         <div class="tab-content" id="roleTabContent">
             <div class="tab-pane fade show active" id="user-content" role="tabpanel" aria-labelledby="user-tab">
-                <h1>Information page</h1>
+                <h1>User's information-page</h1>
                 <table class="table table-bordered">
                     <thead>
                     <tr class="title-table">
-                        <th colspan="7">About user:</th>
+                        <th colspan="7">User data:</th>
                     </tr>
                     <tr>
                         <th>Name</th>
@@ -129,11 +151,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:value="user">
-                        <td th:text="${user.name}">Ivan</td>
-                        <td th:text="${user.email}">ivan@example.com</td>
-                        <td th:text="${user.age}">35</td>
-                        <td th:text="${user.roles}">User</td>
+                    <tr>
+                        <td id="nameCurrent">Ivan</td>
+                        <td id="emailCurrent">ivan@example.com</td>
+                        <td id="ageCurrent">18</td>
+                        <td id="rolesCurrent">User, Admin</td>
                     </tr>
                     </tbody>
                 </table>
@@ -142,5 +164,6 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/users_info.js"></script>
 </body>
 </html>
